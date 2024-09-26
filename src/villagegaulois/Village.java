@@ -3,11 +3,14 @@ package villagegaulois;
 import personnages.Chef;
 import personnages.Gaulois;
 
+
 public class Village {
 	private String nom;
 	private Chef chef;
 	private Gaulois[] villageois;
 	private int nbVillageois = 0;
+	
+	
 
 	public Village(String nom, int nbVillageoisMaximum) {
 		this.nom = nom;
@@ -49,11 +52,91 @@ public class Village {
 					+ chef.getNom() + ".\n");
 		} else {
 			chaine.append("Au village du chef " + chef.getNom()
-					+ " vivent les légendaires gaulois :\n");
+					+ " vivent les lÃ©gendaires gaulois :\n");
 			for (int i = 0; i < nbVillageois; i++) {
 				chaine.append("- " + villageois[i].getNom() + "\n");
 			}
 		}
 		return chaine.toString();
 	}
+	
+	
+	
+	
+	private static class Marche{
+		
+		private Etal[] etales;
+		private int nbe = 0;
+		
+		
+		private Marche(int nbe) {
+			super();
+			this.nbe =nbe;
+			etales = new Etal[nbe];
+		
+			for(int i = 0 ; i < nbe ; i++) {
+				etales[i] = new Etal();
+			}
+		}
+		
+		public void utiliserEtal(int indiceEtal, Gaulois vendeur, String produit, int nbProduit) {
+			etales[indiceEtal].occuperEtal( vendeur,  produit, nbProduit);//occuper etal dans le meme pasckage donc oklm
+		}
+		
+		
+		public int trouverEtalLibre() {
+			for(int i = 0 ; i < nbe ; i++) {
+				if (etales[i].isEtalOccupe() == false) {
+					return i;
+				}
+			}
+			return -1;
+		}
+		
+		
+		
+		
+		public Etal[] trouverEtals(String produit) {
+			Etal[] etalp = new Etal[nbe] ;
+			int j = 0 ;
+			for(int i = 0 ; i < nbe ; i++) {
+				if(etales[i].contientProduit(produit)) {
+					etalp[j] = etales[i];
+					j=j+1;
+				}		
+			}
+			return etalp;
+		}
+		
+		
+		
+		
+		public Etal trouverVendeur(Gaulois gaulois) {
+			for(int i = 0 ; i < nbe ; i++) {
+				if(etales[i].getVendeur()==gaulois) {
+					return etales[i];
+				}		
+			}
+			return null;
+			
+	
+		} 
+		
+		
+		public String afficherMarche(){
+			int v = 0;
+			for(int i = 0 ; i < nbe ; i++) {
+				if(etales[i].isEtalOccupe()==true) {
+					etales[i].afficherEtal();
+				}else
+					v=v+1;
+			}
+			if (v != 0) {
+				System.out.println("Il reste " + v + " étals non utilisés dans le marché.\n");
+				
+			}
+			return null;
+		}
+	}	
+		
 }
